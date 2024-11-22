@@ -1,0 +1,9 @@
+# Node modules (backend and frontend)
+node_modules/
+client/node_modules/
+server/node_modules/
+build/
+dist/
+package-lock.json
+yarn.lock
+

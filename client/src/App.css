@@ -1,0 +1,18 @@
+label{
+  display: block;
+}
+input{
+  display: block;
+}
+div{
+  width: 50%;
+  margin:5% auto 0% auto ;
+}
+
+
+p{
+  display: inline-block;
+}
+li{
+  list-style: none;
+}

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: serv-service
+spec:
+  selector:
+    name: DB-pod
+  ports:
+    protocol: TCP
+  - port: 7000    #any port
+    targetPort: 5000
+  type: ClusterIP
