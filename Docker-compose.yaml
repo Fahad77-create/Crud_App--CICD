@@ -6,6 +6,7 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
+    image: ${DOCKER_IMAGE:client}
     volumes:
       - ./client/src:/app/src 
     ports:
@@ -20,6 +21,7 @@ services:
     build:
       context: ./Server
       dockerfile: Dockerfile
+    image: ${DOCKER_IMAGE:server}
     volumes:
       - ./Server:/app  #chnges in codepart wil autmticly reeflect in cont. hence 
                        #server wll restart
@@ -40,9 +42,10 @@ services:
     networks:
       - mern-net
     container_name: mongo-con
+    restart: unless-stopped
 
 volumes:               #leave them empty, default config
-  mongodbdata:
+  mongo-data:
 
 networks:
   mern-net:
