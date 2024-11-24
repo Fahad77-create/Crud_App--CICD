@@ -6,7 +6,7 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
-    image: ${DOCKER_IMAGE:client}
+    image: ${DOCKER_IMAGE:-client}
     volumes:
       - ./client/src:/app/src 
     ports:
@@ -21,7 +21,7 @@ services:
     build:
       context: ./Server
       dockerfile: Dockerfile
-    image: ${DOCKER_IMAGE:server}
+    image: ${DOCKER_IMAGE:-server}
     volumes:
       - ./Server:/app  #chnges in codepart wil autmticly reeflect in cont. hence 
                        #server wll restart
