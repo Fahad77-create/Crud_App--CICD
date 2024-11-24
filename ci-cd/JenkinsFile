@@ -1,11 +1,12 @@
 pipeline {
     agent any
+
     environment {
         PATH = "${env.PATH};C:\\Windows\\System32"
         DOCKER_IMAGE = "fahadx/myapp:1"
         DOCKER_CREDENTIALS = credentials('docker_hub')
         KUBE_CONFIG = credentials('kube')
-        SCANNER_HOME = tool 'sonar-scan' //sonar tool
+        SCANNER_HOME = tool 'sonar-scan' // SonarQube tool
     }
 
     stages {
@@ -13,7 +14,7 @@ pipeline {
             steps {
                 script {
                     if (fileExists('Crud_App--CICD')) {
-                        bat 'rmdir /s /q Crud_App--CICD' 
+                        bat 'rmdir /s /q Crud_App--CICD'
                     }
                     bat 'git clone --branch test https://github.com/Fahad77-create/Crud_App--CICD.git'
                 }
@@ -22,8 +23,12 @@ pipeline {
 
         stage('Static Code Analysis') {
             steps {
-                withSonarQubeEnv('sonar-scan') {
-                  bat 'sonar-scanner -Dsonar.projectKey=crud-app -Dsonar.sources=./Crud_App--CICD'
+                withSonarQubeEnv('sonar-scan') { // Name of SonarQube server in Jenkins config
+                    bat """
+                        ${SCANNER_HOME}\\bin\\sonar-scanner.bat ^
+                        -Dsonar.projectKey=crud-app ^
+                        -Dsonar.sources=./Crud_App--CICD
+                    """
                 }
             }
         }
@@ -40,7 +45,6 @@ pipeline {
             steps {
                 script {
                     bat "powershell -ExecutionPolicy Bypass -File ./Crud_App--CICD/trivy-scan.ps1 $DOCKER_IMAGE:client"
-
                     bat "powershell -ExecutionPolicy Bypass -File ./Crud_App--CICD/trivy-scan.ps1 $DOCKER_IMAGE:server"
                 }
             }
